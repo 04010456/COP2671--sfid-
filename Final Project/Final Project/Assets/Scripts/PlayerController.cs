@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject projectilePrefab;
+
     private Rigidbody playerRb;
     private float horizontalInput;
 
     public float playerJump = 7;
     public bool whileOnGround = true;
     public float playerSpeed = 10f;
+    public float gravityModifier;
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
+        Physics.gravity *= gravityModifier;
     }
 
     // Update is called once per frame
@@ -28,6 +32,18 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.AddForce(Vector3.up * playerJump, ForceMode.Impulse);
             whileOnGround = false;
+        }
+
+        // if the user presses the spacebar, a projectile will fly
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // have the projectile shoot 1f above the users y position
+            Vector3 projectilePosition = transform.position;
+            projectilePosition.y += 1.0f;
+            projectilePosition.x += 5.0f;
+
+            // launch the projectile
+            Instantiate(projectilePrefab, projectilePosition, projectilePrefab.transform.rotation);
         }
     }
 
