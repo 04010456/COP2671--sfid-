@@ -1912,7 +1912,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!65 &8670356717852255238
 BoxCollider:
@@ -1960,7 +1960,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  offset: 2
 --- !u!1 &8615217133383987998
 GameObject:
   m_ObjectHideFlags: 0

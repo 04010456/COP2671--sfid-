@@ -12,8 +12,9 @@ public class PlayerController : MonoBehaviour
 
     public float playerJump = 7;
     public bool whileOnGround = true;
-    public float playerSpeed = 10f;
+    public float playerSpeed = 7f;
     public float gravityModifier;
+    public bool hasPowerup = false;
     public AudioClip jumpSound;
     public AudioClip shootSound;
     // Start is called before the first frame update
@@ -59,5 +60,25 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         whileOnGround = true;
+    }
+
+    // method for when the player collides with the powerup
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Powerup"))
+        {
+            hasPowerup = true;  
+            Destroy(other.gameObject);
+            StartCoroutine(PowerUpCountdownRoutine());  // call the IEnumerator method that contains the powerup timer
+            playerSpeed = 15f;
+        }
+    }
+
+    // allow the powerup to last for 10 seconds
+    IEnumerator PowerUpCountdownRoutine()
+    {
+        yield return new WaitForSeconds(10);
+        hasPowerup = false;
+        playerSpeed = 7f;
     }
 }
