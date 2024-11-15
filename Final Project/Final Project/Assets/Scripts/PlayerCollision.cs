@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DetectCollisions : MonoBehaviour
+public class PlayerCollision : MonoBehaviour
 {
     private GameManager gameManager;
     // Start is called before the first frame update
@@ -17,15 +17,13 @@ public class DetectCollisions : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.CompareTag("Enemies"))
+        // if the user hits the enemy, end the game
+        if (other.gameObject.CompareTag("Enemies"))
         {
-            // have the projectile destroy the enemy and the obstacles
-            gameManager.UpdateScore(5);
-            Destroy(gameObject);
+            // Handle game-over logic when the player collides with an enemy
+            gameManager.GameOver();
         }
-
-        Destroy(other.gameObject);
     }
 }

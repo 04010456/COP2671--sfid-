@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DetectCollisions : MonoBehaviour
-{
+public class DifficultyButton : MonoBehaviour
+{ 
+    private Button button;
     private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
+        // button component and game manager reference
+        button = GetComponent<Button>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
+        button.onClick.AddListener(SetDifficulty);
     }
 
     // Update is called once per frame
@@ -17,15 +23,9 @@ public class DetectCollisions : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    void SetDifficulty()
     {
-        if (other.CompareTag("Enemies"))
-        {
-            // have the projectile destroy the enemy and the obstacles
-            gameManager.UpdateScore(5);
-            Destroy(gameObject);
-        }
-
-        Destroy(other.gameObject);
+        Debug.Log(gameObject.name + " Was clicked");
+        gameManager.StartGame();
     }
 }

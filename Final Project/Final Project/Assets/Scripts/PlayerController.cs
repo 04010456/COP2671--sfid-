@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
             // have the projectile shoot 1f above the users y position
             Vector3 projectilePosition = transform.position;
             projectilePosition.y += 1.0f;
-            projectilePosition.x += 5.0f;
+            projectilePosition.x += 3.0f;
 
             // launch the projectile
             Instantiate(projectilePrefab, projectilePosition, projectilePrefab.transform.rotation);

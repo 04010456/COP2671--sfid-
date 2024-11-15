@@ -19,33 +19,37 @@ public class SpawnManager : MonoBehaviour
     private Vector3 offsetEnemy = new Vector3(25, 0, 0);
     private float startDelay = 5f;
     private float repeatRate = 5f;
+    private GameManager gameManager;
+ 
     // Start is called before the first frame update
     void Start()
     {
-        // create new instances of the powerup prefab and generate a random spawn position for it
-        // Instantiate(powerupPrefab, GenerateRandomPowerupPosition(), powerupPrefab.transform.rotation);
-
-        // call the function after a certain amount of time and continue to call the function at a certain rate
-        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
-        StartCoroutine(SpawnEnemy(waveNumber));  // coroutine for the spawn enemies method
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemyCount = FindObjectsOfType<Enemy>().Length;
-        if (enemyCount == 0 && !isEnemiesBeingSpawned)
+        if (gameManager.isGameActive)
         {
-            waveNumber++; 
-            StartCoroutine(SpawnEnemy(waveNumber));  // coroutine for the spawn enemies method
-            Instantiate(powerupPrefab, GenerateRandomPowerupPosition(), powerupPrefab.transform.rotation);  // generate a powerup when there are not more enemies on the screen
-
+            enemyCount = FindObjectsOfType<Enemy>().Length;
+            if (enemyCount == 0 && !isEnemiesBeingSpawned && gameManager.isGameActive)
+            {
+                waveNumber++;
+                StartCoroutine(SpawnEnemy(waveNumber));  // coroutine for the spawn enemies method
+                Instantiate(powerupPrefab, GenerateRandomPowerupPosition(), powerupPrefab.transform.rotation);  // generate a powerup when there are not more enemies on the screen
+            }
         }
     }
 
     // spawn obstacle function
-    void SpawnObstacle()
-    {
+    public void SpawnObstacle()
+    { 
+        // spawn obstacles when the game is active
+        if (!gameManager.isGameActive)
+        {
+            return;
+        }
         // variable to spawn a random obstacle
         int obstacleIndex = Random.Range(0, obstaclePrefab.Length);
 
@@ -55,7 +59,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     // spawn enemy function
-    IEnumerator SpawnEnemy(int enemiesSpawning)
+    public IEnumerator SpawnEnemy(int enemiesSpawning)
     {
         if (isEnemiesBeingSpawned)
         {
@@ -92,5 +96,20 @@ public class SpawnManager : MonoBehaviour
         float spawnPosX = player.transform.position.x + Random.Range(7, 10);
         Vector3 randomPos = new Vector3(spawnPosX, 3, 0);
         return randomPos;
+    }
+
+    public void StopSpawningEnemies()
+    {
+        isEnemiesBeingSpawned = true;
+        CancelInvoke("SpawnObstacle");
+        StopAllCoroutines();
+    }
+
+    // spawn obstacles and enemies when the game starts
+    public void StartSpawning()
+    {
+        // call the function after a certain amount of time and continue to call the function at a certain rate
+        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
+        StartCoroutine(SpawnEnemy(waveNumber));  // coroutine for the spawn enemies method
     }
 }
