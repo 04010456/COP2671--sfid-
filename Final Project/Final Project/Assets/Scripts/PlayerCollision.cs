@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
+    // create instance of the game manager
     private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
+        // create a reference to the game manager component
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 

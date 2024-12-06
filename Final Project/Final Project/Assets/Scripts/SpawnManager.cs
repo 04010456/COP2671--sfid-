@@ -6,15 +6,15 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    // create public gameobjects for the obstacl, enemy and player prefabs
+    // create public gameobjects for the obstacles, enemy and player prefabs
     public GameObject[] obstaclePrefab;
     public GameObject[] enemyPrefab;
     public GameObject powerupPrefab;
     public GameObject player;
     public int enemyCount;
     public int waveNumber = 1;
-
     public bool isEnemiesBeingSpawned = false;
+
     private Vector3 offsetObstacle = new Vector3(30, 0, 0);
     private Vector3 offsetEnemy = new Vector3(25, 0, 0);
     private float startDelay = 5f;
@@ -24,12 +24,14 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // create a reference to the game manager component
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // while the game is active spawn enemies and powerups
         if (gameManager.isGameActive)
         {
             enemyCount = FindObjectsOfType<Enemy>().Length;
@@ -59,7 +61,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     // spawn enemy function
-    public IEnumerator SpawnEnemy(int enemiesSpawning)
+    public IEnumerator SpawnEnemy(int waveNumber)
     {
         if (isEnemiesBeingSpawned)
         {
@@ -67,6 +69,9 @@ public class SpawnManager : MonoBehaviour
         }
 
         isEnemiesBeingSpawned = true;
+
+        // number of enemies based on the selected difficulty
+        int enemiesSpawning = waveNumber * gameManager.difficulty;
 
         for (int i = 0; i < enemiesSpawning; i++)
         {
@@ -98,6 +103,7 @@ public class SpawnManager : MonoBehaviour
         return randomPos;
     }
 
+    // stop spawning the enemies when called
     public void StopSpawningEnemies()
     {
         isEnemiesBeingSpawned = true;

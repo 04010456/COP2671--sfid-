@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    // get instance of enemy rigid body and the players game object
     public float speed = 5f;
     private Rigidbody enemyRb;
     private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
+        // create a reference to the enemy rigid body component and player game object
         enemyRb = GetComponent<Rigidbody>();    
         player = GameObject.Find("Player");
     }
